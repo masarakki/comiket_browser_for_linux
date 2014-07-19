@@ -1,3 +1,3 @@
 class Comiket
-  No = 83
+  No = 82
 end

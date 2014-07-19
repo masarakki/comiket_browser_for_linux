@@ -6,13 +6,14 @@ ComiketBrowser.controllers :circles do
     page = (params[:page] || 0).to_i
     day = (params[:day] || 1).to_i
     block_id = params[:block_id].try(:to_i)
+    comiket_no = (params[:c] || Comiket::No).to_i
 
     block = block_id ? Block.find_and_day(block_id, day) : nil
 
     return 400 if page < 0 || day < 1
 
     offset = nums * page
-    circles = Circle.includes([:block, :checklist]).order('block_id, space_no').where(comiket_no: Comiket::No, day: day)
+    circles = Circle.includes([:block, :checklist]).order('block_id, space_no').where(comiket_no: comiket_no, day: day)
     circles = circles.where(block_id: block_id) if block_id
     total_count = circles.count
     circles = circles.limit(nums).offset(offset)
